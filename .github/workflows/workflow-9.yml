@@ -1,0 +1,42 @@
+name: workflow-9
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install action-9 dependencies
+        run: |
+          cd action-9
+          npm install
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install root dependencies (if present)
+        run: |
+          if [ -f package.json ]; then npm install; fi
+
+      - name: Run custom action (artifact creator)
+        uses: ./action-9
+        with:
+          example-input: 'This is a test artifact from custom action.'
+
+      - name: Archive artifact.txt
+        uses: actions/upload-artifact@v4
+        with:
+          name: action-9-artifact
+          path: artifact.txt
+
+      - name: List files in workspace
+        run: ls -l

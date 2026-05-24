@@ -1,0 +1,9 @@
+name: 'Custom Echo Action'
+description: 'A simple custom GitHub Action that echoes input and creates an artifact.'
+inputs:
+  example-input:
+    description: 'A string to echo.'
+    required: true
+runs:
+  using: 'node20'
+  main: 'index.js'
